@@ -1,0 +1,51 @@
+version: '3.7'
+services:  
+  postgres:
+    image: words_db:latest
+    container_name: postgres
+    environment:
+        POSTGRES_PASSWORD: postgres
+    expose:
+        - "5432"
+    networks:
+        - words
+   # deploy:
+   #   replicas: 1
+   ##   placement:
+    #    constraints:
+    #      - node.role == worker
+    #  restart_policy:
+    #    condition: on-failure
+
+  words:
+    image: words:latest
+    container_name: words
+    expose:
+      - "8080" 
+    networks:
+      - words
+  #  deploy:
+  #    replicas: 1
+  #    placement:
+  #      constraints:
+  #        - node.role == worker
+  #    restart_policy:
+  #      condition: on-failure
+        
+  web:
+    image: web:latest
+    container_name: web
+    ports:
+      - "80"
+    networks:
+      - words
+  #  deploy:
+  #      replicas: 1
+  #      placement:
+  #        constraints:
+   #         - node.role == worker
+   #     restart_policy:
+   #       condition: on-failure
+
+networks:
+  words:
